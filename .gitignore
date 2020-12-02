@@ -3,4 +3,4 @@ test_data_labels/
 test_prob/
 train_data/
 train_data_labels/
-myforest.rf
+resources/data/myforest.rf
