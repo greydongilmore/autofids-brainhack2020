@@ -21,13 +21,14 @@ An open framework for evaluating correspondence in brain images and teaching neu
 
 ## Requirements
 
-* dcm2niix (v1.0.20200427)
+* Convert3D tool: https://sourceforge.net/projects/c3d/
+  - further documentation for c3d: https://github.com/pyushkevich/c3d/blob/master/doc/c3d.md
 * python requirements (defined in `requirements.txt`):
-    * PyYAML>=5.3.1
-    * scikit-learn>=0.23.1
-    * nibabel>=3.1.0
-    * pandas>=1.0.5
-    * numpy>=1.19.4
+  - yYAML>=5.3.1
+  - scikit-learn>=0.23.1
+  - nibabel>=3.1.0
+  - pandas>=1.0.5
+  - numpy>=1.19.4
 
 ## Input directory structure
 
