@@ -1,0 +1,5 @@
+
+input_dir: '/home/greydon/Documents/GitHub/autofids-brainhack2020/resources/data/input_data'
+output_dir: '/home/greydon/Documents/GitHub/autofids-brainhack2020/resources/data'
+
+c3d_path: '/opt/c3d/bin'
