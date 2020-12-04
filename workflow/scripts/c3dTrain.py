@@ -18,13 +18,21 @@ c4d_path=os.path.join(config['c3d_path'],'c4d')
 def main():
     
     input_files = os.path.join(config['output_dir'],'train_data','*.nii.gz')
-    input_labels = os.path.join(config['output_dir'],'train_data_labels','*.nii.gz')
-    model_file = os.path.join(config['output_dir'],'myforest.rf')
+    input_labels = os.path.join(config['output_dir'],'train_data_masks','*hardmask.nii.gz')
     
+    model_fn=f"ntrees-{config['c3d']['model_params']['ntrees']}_tdepth-" \
+        f"{config['c3d']['model_params']['treedepth']}_patch-{config['c3d']['model_params']['patch']}_model.rf"
+    model_file = os.path.join(config['output_dir'], model_fn)
+    
+    extra=''
+    if config['c3d']['model_params']['other']:
+        extra=' '.join(['-'+x for x in config['c3d']['model_params']['other']])
+        
     #--- Build c4d Command
-    c4d_cmd = f"{c4d_path} -verbose {input_files} -foreach -popas ALLMRI -endfor {input_labels} \
-        -foreach -popas ALLSEG -endfor -rf-param-patch 3x3x3x0 -push ALLMRI -push ALLSEG -rf-param-treedepth 50 \
-        -rf-param-ntrees 100 -rf-train {model_file}"
+    c4d_cmd = f"{c4d_path} -verbose {input_files} -foreach -popas ALLMRI -endfor {input_labels} " \
+        f"-foreach -popas ALLSEG -endfor -rf-param-patch {config['c3d']['model_params']['patch']} " \
+        f"-push ALLMRI -push ALLSEG -rf-param-treedepth {config['c3d']['model_params']['treedepth']} " \
+        f"-rf-param-ntrees {config['c3d']['model_params']['ntrees']} {extra} -rf-train {model_file}"
     
     #--- Run c3d command
     print ('Starting model training...')

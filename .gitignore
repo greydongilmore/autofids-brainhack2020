@@ -4,3 +4,4 @@ test_prob/
 train_data/
 train_data_labels/
 resources/data/myforest.rf
+.snakemake

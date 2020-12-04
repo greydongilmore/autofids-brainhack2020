@@ -1,5 +1,32 @@
 
-input_dir: '/home/greydon/Documents/GitHub/autofids-brainhack2020/resources/data/input_data'
-output_dir: '/home/greydon/Documents/GitHub/autofids-brainhack2020/resources/data'
+input_dir: '/media/veracrypt6/projects/iEEG/imaging/clinical/deriv/model_pred/input_data'
+output_dir: '/media/veracrypt6/projects/iEEG/imaging/clinical/deriv/model_pred2'
 
 c3d_path: '/opt/c3d/bin'
+ants_path: '/opt/ANTs/bin'
+
+preproc:
+    resample:
+        res: [1,1,1]
+        interp: 1
+    bias_correct:
+        perform: False
+        dim: 3
+        n_iterations: [100, 100, 60, 40]
+        shrink_factor: 3
+        convergence_threshold: 1e-4
+        bspline_fitting_distance: 300
+    fcm:
+      num_class: 3
+      norm_value: 1
+
+c3d:
+    landmarks:
+        sphere_size: 1
+        sphere_label: 4
+    model_params:
+        patch: 3x3x3x0
+        treedepth: 50
+        ntrees: 200
+        other:
+          - rf-param-usexyz

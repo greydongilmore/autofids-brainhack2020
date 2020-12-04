@@ -1,0 +1,57 @@
+from os.path import join,basename
+import pandas as pd
+from snakemake.utils import validate
+from glob import glob
+from sklearn.model_selection import train_test_split
+
+
+configfile: 'config/config.yml'
+
+nifti_files=glob(os.path.join(config['input_dir'])+'/*.nii.gz')
+x_train ,x_test = train_test_split(nifti_files,test_size=0.2)
+
+print(x_train)
+print(x_test)
+model_fn=f"ntrees-{config['c3d']['model_params']['ntrees']}_tdepth-" \
+        f"{config['c3d']['model_params']['treedepth']}_patch-{config['c3d']['model_params']['patch']}_model.rf"
+
+
+rule all:
+        input:
+            outfile_train=expand(join(config['output_dir'], 'train_data', basename('{train_fn}')), train_fn=x_train),
+            outfile_test=expand(join(config['output_dir'], 'test_data', basename('{test_fn}')), test_fn=x_test),
+            #landmark=expand(join(config['out_dir'], 'train_data_labels', os.path.basename('{ifile}').split('.nii')[0] + '_landmarks.nii.gz'), ifile=x_train)
+            #model=join(config['out_dir'], model_fn),
+
+
+rule import_subj_test:
+    input: 
+        test=expand('{test_fn}', test_fn=x_test),
+    output: 
+        test_out=join(config['output_dir'], 'test_data', basename('{test_fn}')),
+    group: 'preproc'
+    shell: 'cp {input.test} {output.test_out}'
+
+rule import_subj_train:
+    input: 
+        train=expand('{train_fn}', train_fn=x_train),
+    output: 
+        train_out=join(config['output_dir'], 'train_data', basename('{train_fn}')),
+    group: 'preproc'
+    shell: 'cp {input.train} {output.train_out}'
+
+
+#rule modelTrain:
+#    input:
+#        touch=join(config['out_dir'], "train.done"),
+#    params: 
+#        data = join(config['train_data'], '*.nii.gz'),
+#        labels = join(config['label_data'], '*.nii.gz'),
+#    output: 
+#        model = join(config['out_dir'], 'myforest.rf'),
+#    resources:
+#        mem_mb = 20000
+#    shell:
+#        'c4d -verbose {params.data} -tile w -popas ALLMRI {params.labels} -tile w -popas ALLSEG -rf-param-patch 2x2x2x0\
+#         -push ALLMRI -push ALLSEG -rf-param-treedepth 30 -rf-param-ntrees 50 -rf-train {output.model}' 
+#
