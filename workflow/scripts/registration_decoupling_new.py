@@ -93,7 +93,7 @@ if debug:
 			self.__dict__.update(kwargs)
 	
 	input_bids_dir=r'/home/greydon/scratch/autofid_final/HCP/fmriprep'
-	input_fcsv_dir=r'/home/greydon/scratch/autofid/data/HCP/deriv/testing/HCP_fcsvs'
+	input_fcsv_dir=r'/home/greydon/scratch/autofid_final/HCP/Original'
 	output_dir_lin=r'/home/greydon/scratch/fmriprep_HCP_linear_GG'
 	output_dir_combined=r'/home/greydon/scratch/fmriprep_HCP_combined_GG'
 
